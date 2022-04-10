@@ -4,7 +4,7 @@ import ge.gogichaishvili.simpleapplication.R
 import ge.gogichaishvili.simpleapplication.models.DiceModel
 import java.util.*
 
-open class Dice() {
+open class Dice {
     fun rollDice(): DiceModel {
         val diceValue = Random().nextInt(6) + 1
         val diceImage = when (diceValue) {

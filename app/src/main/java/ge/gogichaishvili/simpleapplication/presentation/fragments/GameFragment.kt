@@ -25,7 +25,6 @@ import java.util.*
 import kotlin.concurrent.schedule
 import kotlin.math.sqrt
 
-
 class GameFragment : Fragment() {
 
     private var _binding: FragmentGameBinding? = null
