@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:keepScreenOn="true"
+    tools:context=".presentation.fragments.GameFragment">
+
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/iv_player"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_margin="15dp"
+        android:src="@drawable/avatar_1"
+        app:civ_border_width="3dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_playerOneName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/iv_player"
+        app:layout_constraintTop_toBottomOf="@+id/iv_player"
+        tools:text="Player" />
+
+    <TextView
+        android:id="@+id/tv_playerOneScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/score"
+        android:textColor="@color/text_color_gold"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_playerOneName"
+        app:layout_constraintTop_toBottomOf="@+id/tv_playerOneName" />
+
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/iv_opponent"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_margin="15dp"
+        android:src="@drawable/avatar_2"
+        app:civ_border_width="3dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_playerTwoName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:gravity="center"
+        android:textColor="@color/hint_color"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/iv_opponent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_opponent"
+        tools:text="Opponent" />
+
+    <TextView
+        android:id="@+id/tv_playerTwoScore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/score"
+        android:textColor="@color/text_color_gold"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_playerTwoName"
+        app:layout_constraintTop_toBottomOf="@+id/tv_playerOneName" />
+
+    <TextView
+        android:id="@+id/tv_currentScore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="50dp"
+        android:fontFamily="@font/bpg_super_square"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/iv_dice1"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Current score is " />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_dice1"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/iv_dice2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/dice_6" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_dice2"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iv_dice1"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/dice_6" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_roll_1"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:layout_margin="50dp"
+        android:background="@drawable/rounded_button"
+        android:elevation="1dp"
+        android:text="@string/roll"
+        android:textAllCaps="false"
+        android:textColor="@color/text_color_gold"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_dice1" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_replay"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:layout_margin="50dp"
+        android:background="@drawable/rounded_button"
+        android:elevation="1dp"
+        android:text="@string/replay"
+        android:textAllCaps="false"
+        android:textColor="@color/text_color_gold"
+        android:textSize="16sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_dice1" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
