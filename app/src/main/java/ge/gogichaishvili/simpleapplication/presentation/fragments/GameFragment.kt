@@ -193,4 +193,6 @@ class GameFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+
 }

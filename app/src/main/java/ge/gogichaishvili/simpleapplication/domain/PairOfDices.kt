@@ -1,6 +1,8 @@
 package ge.gogichaishvili.simpleapplication.domain
 
 import android.content.Context
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.appcompat.widget.AppCompatImageView
 import ge.gogichaishvili.simpleapplication.R
 import ge.gogichaishvili.simpleapplication.tools.Tools
@@ -14,6 +16,9 @@ class PairOfDices(
     fun rollDices(): Int {
         val diceOne = rollDice()
         val diceTwo = rollDice()
+        val anim = AnimationUtils.loadAnimation(context, R.anim.rotate)
+        viewForDiceOne.startAnimation(anim)
+        viewForDiceTwo.startAnimation(anim)
         viewForDiceOne.setImageResource(diceOne.diceImage)
         viewForDiceTwo.setImageResource(diceTwo.diceImage)
         Tools.playSound(context, R.raw.roll)
@@ -26,6 +31,10 @@ class PairOfDices(
         } else {
             dice1 + dice2
         }
+    }
+
+    fun animationDice () {
+
     }
 
 }
