@@ -1,8 +1,11 @@
 package ge.gogichaishvili.simpleapplication.presentation.fragments
 
 import android.annotation.SuppressLint
-import android.graphics.ColorMatrix
-import android.graphics.ColorMatrixColorFilter
+import android.content.Context
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +13,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.mikhaellopez.circularimageview.CircularImageView
 import ge.gogichaishvili.simpleapplication.R
 import ge.gogichaishvili.simpleapplication.databinding.FragmentGameBinding
 import ge.gogichaishvili.simpleapplication.domain.Game
@@ -19,12 +21,20 @@ import ge.gogichaishvili.simpleapplication.tools.SharedPreferenceManager
 import ge.gogichaishvili.simpleapplication.tools.Tools
 import ge.gogichaishvili.simpleapplication.tools.Tools.setLocked
 import ge.gogichaishvili.simpleapplication.tools.Tools.setUnlocked
+import java.util.*
 
 
 class GameFragment : Fragment() {
 
     private var _binding: FragmentGameBinding? = null
     private val binding get() = _binding!!
+
+    //sensor manager
+    private var sensorManager: SensorManager? = null
+    private var acceleration = 0f
+    private var currentAcceleration = 0f
+    private var lastAcceleration = 0f
+
 
     private lateinit var player: Player
     private lateinit var opponent: Player
@@ -47,6 +57,18 @@ class GameFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Getting the Sensor Manager instance
+        sensorManager = requireContext().getSystemService(Context.SENSOR_SERVICE) as SensorManager
+
+        Objects.requireNonNull(sensorManager)!!
+            .registerListener(sensorListener, sensorManager!!
+                .getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL)
+
+        acceleration = 10f
+        currentAcceleration = SensorManager.GRAVITY_EARTH
+        lastAcceleration = SensorManager.GRAVITY_EARTH
+
 
         pref = SharedPreferenceManager(requireContext())
         val playerInfo = pref.getPlayerData()
@@ -207,5 +229,42 @@ class GameFragment : Fragment() {
     }
 
 
+    //detect shake
+    private val sensorListener: SensorEventListener = object : SensorEventListener {
+        override fun onSensorChanged(event: SensorEvent) {
 
+            // Fetching x,y,z values
+            val x = event.values[0]
+            val y = event.values[1]
+            val z = event.values[2]
+            lastAcceleration = currentAcceleration
+
+            // Getting current accelerations
+            // with the help of fetched x,y,z values
+            currentAcceleration = kotlin.math.sqrt((x * x + y * y + z * z).toDouble()).toFloat()
+            val delta: Float = currentAcceleration - lastAcceleration
+            acceleration = acceleration * 0.9f + delta
+
+            // Display a Toast message if
+            // acceleration value is over 12
+            if (acceleration > 12) {
+                binding.btnRoll1.performClick()
+            }
+        }
+        override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {}
+    }
+
+    override fun onResume() {
+        sensorManager?.registerListener(sensorListener, sensorManager!!.getDefaultSensor(
+            Sensor .TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL
+        )
+        super.onResume()
+    }
+
+    override fun onPause() {
+        sensorManager!!.unregisterListener(sensorListener)
+        super.onPause()
+    }
 }
+
+
