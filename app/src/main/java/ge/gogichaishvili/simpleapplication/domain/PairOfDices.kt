@@ -1,7 +1,6 @@
 package ge.gogichaishvili.simpleapplication.domain
 
 import android.content.Context
-import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.appcompat.widget.AppCompatImageView
 import ge.gogichaishvili.simpleapplication.R
@@ -31,10 +30,6 @@ class PairOfDices(
         } else {
             dice1 + dice2
         }
-    }
-
-    fun animationDice () {
-
     }
 
 }

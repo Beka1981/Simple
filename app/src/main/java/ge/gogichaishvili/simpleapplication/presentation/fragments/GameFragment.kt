@@ -22,6 +22,8 @@ import ge.gogichaishvili.simpleapplication.tools.Tools
 import ge.gogichaishvili.simpleapplication.tools.Tools.setLocked
 import ge.gogichaishvili.simpleapplication.tools.Tools.setUnlocked
 import java.util.*
+import kotlin.concurrent.schedule
+import kotlin.math.sqrt
 
 
 class GameFragment : Fragment() {
@@ -62,8 +64,10 @@ class GameFragment : Fragment() {
         sensorManager = requireContext().getSystemService(Context.SENSOR_SERVICE) as SensorManager
 
         Objects.requireNonNull(sensorManager)!!
-            .registerListener(sensorListener, sensorManager!!
-                .getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL)
+            .registerListener(
+                sensorListener, sensorManager!!
+                    .getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL
+            )
 
         acceleration = 10f
         currentAcceleration = SensorManager.GRAVITY_EARTH
@@ -138,10 +142,38 @@ class GameFragment : Fragment() {
                 )
 
                 isMyTurn = false
-                binding.btnRoll1.text = getString(R.string.opponent_roll)
-
+                binding.btnRoll1.visibility = View.GONE
                 checkGameResult(currentScore, playerTotalScore, player.name)
+            }
+
+        }
+
+        binding.btnReplay.setOnClickListener {
+            resetGame()
+        }
+
+    }
+
+    private fun checkGameResult(currentScore: Int, TotalScore: Int, playerName: String) {
+        val game = Game(requireContext(), currentScore, TotalScore, playerName)
+        val isGameOver = game.checkGameResult(isMyTurn)
+        if (isGameOver) {
+            binding.btnRoll1.visibility = View.GONE
+            binding.btnReplay.visibility = View.VISIBLE
+        } else {
+            if (!isMyTurn) {
+                playOpponent()
             } else {
+                binding.btnRoll1.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    private fun playOpponent() {
+
+        Timer().schedule(2000) {
+
+            requireActivity().runOnUiThread(Runnable {
 
                 val currentScore = opponent.rollPairOfDices()
                 binding.tvCurrentScore.text =
@@ -168,28 +200,13 @@ class GameFragment : Fragment() {
                 )
 
                 isMyTurn = true
-                binding.btnRoll1.text = getString(R.string.roll)
-
                 checkGameResult(currentScore, opponentTotalScore, opponent.name)
+            })
 
-            }
-
-        }
-
-        binding.btnReplay.setOnClickListener {
-            resetGame()
         }
 
     }
 
-    private fun checkGameResult(currentScore: Int, TotalScore: Int, playerName: String) {
-        val game = Game(requireContext(), currentScore, TotalScore, playerName)
-        val isGameOver = game.checkGameResult(isMyTurn)
-        if (isGameOver) {
-            binding.btnRoll1.visibility = View.GONE
-            binding.btnReplay.visibility = View.VISIBLE
-        }
-    }
 
     private fun resetGame() {
         Tools.playSound(requireContext(), R.raw.success)
@@ -241,7 +258,7 @@ class GameFragment : Fragment() {
 
             // Getting current accelerations
             // with the help of fetched x,y,z values
-            currentAcceleration = kotlin.math.sqrt((x * x + y * y + z * z).toDouble()).toFloat()
+            currentAcceleration = sqrt((x * x + y * y + z * z).toDouble()).toFloat()
             val delta: Float = currentAcceleration - lastAcceleration
             acceleration = acceleration * 0.9f + delta
 
@@ -251,12 +268,15 @@ class GameFragment : Fragment() {
                 binding.btnRoll1.performClick()
             }
         }
+
         override fun onAccuracyChanged(sensor: Sensor, accuracy: Int) {}
     }
 
     override fun onResume() {
-        sensorManager?.registerListener(sensorListener, sensorManager!!.getDefaultSensor(
-            Sensor .TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL
+        sensorManager?.registerListener(
+            sensorListener, sensorManager!!.getDefaultSensor(
+                Sensor.TYPE_ACCELEROMETER
+            ), SensorManager.SENSOR_DELAY_NORMAL
         )
         super.onResume()
     }
