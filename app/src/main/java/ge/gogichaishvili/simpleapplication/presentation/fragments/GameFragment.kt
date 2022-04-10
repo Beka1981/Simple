@@ -1,6 +1,8 @@
 package ge.gogichaishvili.simpleapplication.presentation.fragments
 
 import android.annotation.SuppressLint
+import android.graphics.ColorMatrix
+import android.graphics.ColorMatrixColorFilter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,12 +10,16 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.mikhaellopez.circularimageview.CircularImageView
 import ge.gogichaishvili.simpleapplication.R
 import ge.gogichaishvili.simpleapplication.databinding.FragmentGameBinding
 import ge.gogichaishvili.simpleapplication.domain.Game
 import ge.gogichaishvili.simpleapplication.domain.Player
 import ge.gogichaishvili.simpleapplication.tools.SharedPreferenceManager
 import ge.gogichaishvili.simpleapplication.tools.Tools
+import ge.gogichaishvili.simpleapplication.tools.Tools.setLocked
+import ge.gogichaishvili.simpleapplication.tools.Tools.setUnlocked
+
 
 class GameFragment : Fragment() {
 
@@ -93,7 +99,9 @@ class GameFragment : Fragment() {
                 binding.tvPlayerOneScore.text = "Score: $playerTotalScore"
 
                 binding.ivPlayer.borderColor = requireContext().getColor(R.color.white)
+                setLocked(binding.ivPlayer)
                 binding.ivOpponent.borderColor = requireContext().getColor(R.color.text_color_gold)
+                setUnlocked(binding.ivOpponent)
                 binding.tvPlayerOneName.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
@@ -121,7 +129,9 @@ class GameFragment : Fragment() {
                 binding.tvPlayerTwoScore.text = "Score: $opponentTotalScore"
 
                 binding.ivOpponent.borderColor = requireContext().getColor(R.color.white)
+                setLocked(binding.ivOpponent)
                 binding.ivPlayer.borderColor = requireContext().getColor(R.color.text_color_gold)
+                setUnlocked(binding.ivPlayer)
                 binding.tvPlayerOneName.setTextColor(
                     ContextCompat.getColor(
                         requireContext(),
@@ -168,7 +178,9 @@ class GameFragment : Fragment() {
         binding.tvPlayerTwoScore.text = "${getString(R.string.score)}"
         binding.tvCurrentScore.text = ""
         binding.ivPlayer.borderColor = requireContext().getColor(R.color.text_color_gold)
+        setUnlocked(binding.ivPlayer)
         binding.ivOpponent.borderColor = requireContext().getColor(R.color.white)
+        setLocked(binding.ivOpponent)
         binding.ivDice1.setImageResource(0)
         binding.ivDice2.setImageResource(0)
         binding.tvPlayerOneName.setTextColor(
@@ -193,6 +205,7 @@ class GameFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
 
 
 }
